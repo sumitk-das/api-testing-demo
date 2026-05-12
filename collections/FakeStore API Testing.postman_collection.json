@@ -197,6 +197,208 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Single Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Product ID is 1\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.id).to.equal(1);",
+							"});",
+							"",
+							"pm.test(\"Product has title\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.title).to.exist;",
+							"});",
+							"",
+							"pm.test(\"Product has price\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.price).to.be.a('number');",
+							"});",
+							"",
+							"pm.test(\"Response time is below 2 sec\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+							"});",
+							"",
+							"pm.test(\"JSON Schema is valid\", function () {",
+							"    const schema = {",
+							"        type: \"object\",",
+							"        required: [\"id\", \"title\", \"price\", \"category\", \"image\"],",
+							"        properties: {",
+							"            id: { type: \"number\" },",
+							"            title: { type: \"string\" },",
+							"            price: { type: \"number\" },",
+							"            description: { type: \"string\" },",
+							"            category: { type: \"string\" },",
+							"            image: { type: \"string\" }",
+							"        }",
+							"    };",
+							"",
+							"    const response = pm.response.json();",
+							"    pm.expect(tv4.validate(response, schema)).to.be.true;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/products/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Product title is updated\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.title).to.equal(\"Updated Product Title\");",
+							"});",
+							"",
+							"pm.test(\"Product price is updated\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.price).to.equal(49.99);",
+							"});",
+							"",
+							"pm.test(\"Response time is below 3 sec\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Updated Product Title\",\n  \"price\": 49.99,\n  \"description\": \"This product has been updated\",\n  \"category\": \"electronics\",\n  \"image\": \"https://fakestoreapi.com/img/81fAn1hwKML._AC_UY879_.jpg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/products/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Deleted product ID is 1\", function () {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response.id).to.equal(1);",
+							"});",
+							"",
+							"pm.test(\"Response time is below 3 sec\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{authToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Updated Product Title\",\n  \"price\": 49.99,\n  \"description\": \"This product has been updated\",\n  \"category\": \"electronics\",\n  \"image\": \"https://fakestoreapi.com/img/81fAn1hwKML._AC_UY879_.jpg\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/products/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
